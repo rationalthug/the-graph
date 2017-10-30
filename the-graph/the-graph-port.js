@@ -35,13 +35,15 @@ module.exports.register = function (context) {
 
   // Port view
 
-  TheGraph.Port = React.createFactory( React.createClass({
+  TheGraph.Port = React.createFactory( createReactClass({
     displayName: "TheGraphPort",
     mixins: [
       TooltipMixin
     ],
-    defaultProps: {
-      allowEdgeStart: true,
+    getDefaultProps () {
+      return {
+        allowEdgeStart: true
+      }
     },
     componentDidMount: function () {
       var domNode = ReactDOM.findDOMNode(this);
@@ -86,7 +88,7 @@ module.exports.register = function (context) {
 
       // Get mouse position
       if (event.gesture) {
-        event = event.gesture.srcEvent; // unpack hammer.js gesture event 
+        event = event.gesture.srcEvent; // unpack hammer.js gesture event
       }
       var x = event.x || event.clientX || 0;
       var y = event.y || event.clientY || 0;

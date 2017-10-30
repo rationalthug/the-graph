@@ -99,7 +99,7 @@ module.exports.register = function (context) {
       args = args.concat(content);
     }
 
-    return React.DOM.div.apply(React.DOM.div, args);
+    return DOM.div.apply(DOM.div, args);
   }
 
   function createAppGraph(options) {
@@ -131,7 +131,7 @@ module.exports.register = function (context) {
     return null;
   }
 
-  TheGraph.App = React.createFactory( React.createClass({
+  TheGraph.App = createReactClass({
     displayName: "TheGraphApp",
     mixins: mixins,
     getDefaultProps: function() {
@@ -676,7 +676,7 @@ module.exports.register = function (context) {
       containerOptions.className += " " + scaleClass;
       return TheGraph.factories.app.createAppContainer.call(this, containerOptions, appContents);
     }
-  }));
+  });
 
 
 };

@@ -114,7 +114,7 @@ function renderViewboxFromProps(context, viewbox, thumbInfo, props) {
 }
 
 // https://toddmotto.com/react-create-class-versus-component/
-var Component = React.createClass({
+var Component = createReactClass({
   propTypes: {
   },
   getDefaultProps: function() {
@@ -183,7 +183,7 @@ var Component = React.createClass({
       },
     };
     // Elements
-    var d = React.DOM;
+    var d = DOM;
     return d.div( { key: 'nav', style: wrapperStyle, ref: this._refTopElement }, [
       d.div( viewboxDiv ),
       d.canvas( viewboxCanvas ),

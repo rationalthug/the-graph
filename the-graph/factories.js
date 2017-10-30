@@ -6,27 +6,27 @@ exports.createGroup = function(options, content) {
     args = args.concat(content);
   }
 
-  return React.DOM.g.apply(React.DOM.g, args);
+  return DOM.g.apply(DOM.g, args);
 };
 
 exports.createRect = function(options) {
-  return React.DOM.rect(options);
+  return DOM.rect(options);
 };
 
 exports.createText = function(options) {
-  return React.DOM.text(options);
+  return DOM.text(options);
 };
 
 exports.createCircle = function(options) {
-  return React.DOM.circle(options);
+  return DOM.circle(options);
 };
 
 exports.createPath = function(options) {
-  return React.DOM.path(options);
+  return DOM.path(options);
 };
 
 exports.createPolygon = function(options) {
-  return React.DOM.polygon(options);
+  return DOM.polygon(options);
 };
 
 exports.createImg = function(options) {
@@ -34,7 +34,7 @@ exports.createImg = function(options) {
 };
 
 exports.createCanvas = function(options) {
-  return React.DOM.canvas(options);
+  return DOM.canvas(options);
 };
 
 exports.createSvg = function(options, content) {
@@ -45,5 +45,5 @@ exports.createSvg = function(options, content) {
     args = args.concat(content);
   }
 
-  return React.DOM.svg.apply(React.DOM.svg, args);
+  return DOM.svg.apply(DOM.svg, args);
 };

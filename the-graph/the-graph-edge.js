@@ -65,13 +65,13 @@ module.exports.register = function (context) {
     // Point on the curve between blue points
     var x = b1x * p + b2x * op;
     var y = b1y * p + b2y * op;
-    return [x, y];    
+    return [x, y];
   };
 
 
   // Edge view
 
-  TheGraph.Edge = React.createFactory( React.createClass({
+  TheGraph.Edge = React.createFactory( createReactClass({
     displayName: "TheGraphEdge",
     mixins: [
       TooltipMixin
@@ -109,7 +109,7 @@ module.exports.register = function (context) {
 
       // Get mouse position
       if (event.gesture) {
-        event = event.gesture.srcEvent; // unpack hammer.js gesture event 
+        event = event.gesture.srcEvent; // unpack hammer.js gesture event
       }
       var x = event.x || event.clientX || 0;
       var y = event.y || event.clientY || 0;
@@ -142,9 +142,9 @@ module.exports.register = function (context) {
     shouldComponentUpdate: function (nextProps, nextState) {
       // Only rerender if changed
       return (
-        nextProps.sX !== this.props.sX || 
+        nextProps.sX !== this.props.sX ||
         nextProps.sY !== this.props.sY ||
-        nextProps.tX !== this.props.tX || 
+        nextProps.tX !== this.props.tX ||
         nextProps.tY !== this.props.tY ||
         nextProps.selected !== this.props.selected ||
         nextProps.animated !== this.props.animated ||
@@ -237,7 +237,7 @@ module.exports.register = function (context) {
         return [x1, y1];
       };
 
-      var arrowLength = 12;
+      var arrowLength = 3;
       // Which direction should arrow point
       if (plus[0] > minus[0]) {
         arrowLength *= -1;
@@ -268,7 +268,7 @@ module.exports.register = function (context) {
 
       var arrow = TheGraph.factories.edge.createArrow({
         points: pointsArray,
-        className: 'arrow fill route' + this.props.route
+        className: 'arrow fill stroke route' + this.props.route
       });
 
       return TheGraph.factories.edge.createEdgeGroup(containerOptions,
