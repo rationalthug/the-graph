@@ -96,7 +96,7 @@ module.exports.register = function (context) {
     },
     componentDidMount: function () {
       var domNode = ReactDOM.findDOMNode(this);
-      
+
       // Dragging
       domNode.addEventListener("panstart", this.onTrackStart);
 
@@ -227,7 +227,7 @@ module.exports.register = function (context) {
 
       // Get mouse position
       if (event.gesture) {
-        event = event.gesture.srcEvent; // unpack hammer.js gesture event 
+        event = event.gesture.srcEvent; // unpack hammer.js gesture event
       }
       var x = event.x || event.clientX || 0;
       var y = event.y || event.clientY || 0;
@@ -340,7 +340,7 @@ module.exports.register = function (context) {
     shouldComponentUpdate: function (nextProps, nextState) {
       // Only rerender if changed
       return (
-        nextProps.x !== this.props.x || 
+        nextProps.x !== this.props.x ||
         nextProps.y !== this.props.y ||
         nextProps.icon !== this.props.icon ||
         nextProps.label !== this.props.label ||
@@ -463,12 +463,15 @@ module.exports.register = function (context) {
           iconContent = TheGraph.factories.node.createNodeIconText.call(this, iconOptions);
       }
 
-      var backgroundRectOptions = TheGraph.merge(TheGraph.config.node.background, { width: this.props.width, height: this.props.height + 25 });
+      var backgroundRectOptions = TheGraph.merge(TheGraph.config.node.background, {
+        width: this.props.width,
+        height: this.props.height + (TheGraph.config.node.backgroundOptions ? TheGraph.config.node.backgroundOptions.heightPadding : 25 )
+      });
       var backgroundRect = TheGraph.factories.node.createNodeBackgroundRect.call(this, backgroundRectOptions);
 
       var borderRectOptions = TheGraph.merge(TheGraph.config.node.border, { width: this.props.width, height: this.props.height });
       var borderRect = TheGraph.factories.node.createNodeBorderRect.call(this, borderRectOptions);
-      
+
       var innerRectOptions = TheGraph.merge(TheGraph.config.node.innerRect, { width: this.props.width - 6, height: this.props.height - 6 });
       var innerRect = TheGraph.factories.node.createNodeInnerRect.call(this, innerRectOptions);
 
@@ -478,7 +481,11 @@ module.exports.register = function (context) {
       var outportsOptions = TheGraph.merge(TheGraph.config.node.outports, { children: outportViews });
       var outportsGroup = TheGraph.factories.node.createNodeOutportsGroup.call(this, outportsOptions);
 
-      var labelTextOptions = TheGraph.merge(TheGraph.config.node.labelText, { x: this.props.width / 2, y: this.props.height + 15, children: label });
+      var labelTextOptions = TheGraph.merge(TheGraph.config.node.labelText, {
+        x: this.props.width / 2,
+        y: TheGraph.config.node.labelText ? TheGraph.config.node.labelText.y :this.props.height + 15,
+        children: label
+      });
       var labelText = TheGraph.factories.node.createNodeLabelText.call(this, labelTextOptions);
 
       var labelRectX = this.props.width / 2;
