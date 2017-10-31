@@ -112,7 +112,9 @@ module.exports.register = function (context) {
         this.subscribeGraph(null, this.props.graph);
         ReactDOM.findDOMNode(this).addEventListener("the-graph-node-remove", this.removeNode);
         this.setState(() => {
-          mounted: true
+          return {
+            mounted: true
+          }
         })
     },
     componentWillReceiveProps: function(nextProps) {
