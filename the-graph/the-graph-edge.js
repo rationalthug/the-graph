@@ -206,8 +206,11 @@ module.exports.register = function (context) {
       var containerOptions = {
         className: "edge"+
           (this.props.selected ? " selected" : "")+
-          (this.props.animated ? " animated" : ""),
-        title: this.props.label
+          (this.props.animated ? " animated" : "")+
+          (this.props.nodeSelected ? " node-selected" : ""),
+        title: this.props.label,
+        style: (this.props.selected || this.props.nodeSelected) ? {} :
+          {opacity: this.props.opacity || 1}
       };
 
       containerOptions = TheGraph.merge(TheGraph.config.edge.container, containerOptions);

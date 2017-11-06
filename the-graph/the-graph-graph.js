@@ -439,6 +439,7 @@ module.exports.register = function (context) {
     },
     render: function() {
       this.dirty = false;
+      var rendered = this.rendered;
 
       var self = this;
       var graph = this.props.graph;
@@ -533,6 +534,22 @@ module.exports.register = function (context) {
         return TheGraph.factories.graph.createGraphNode.call(this, nodeOptions);
       });
 
+      var length = function (edgeOptions) {
+        return Math.sqrt(
+          Math.pow((edgeOptions.tX - edgeOptions.sX), 2) +
+          Math.pow((edgeOptions.tY - edgeOptions.sY), 2)
+        );
+      };
+
+      var opacity = function (len) {
+        var max = 1200,
+            min = 100,
+            oMin = 0.3;
+        return len <= min ? 1 : len >= max ? oMin :
+          ((1 - ((len - min) / (max-min))) * (1 - oMin) + oMin);
+      }
+
+
       // Edges
       var edges = graph.edges.map(function (edge) {
         var source = graph.getNode(edge.from.node);
@@ -580,6 +597,9 @@ module.exports.register = function (context) {
           animated: (self.state.animatedEdges.indexOf(edge) !== -1),
           showContext: self.props.showContext
         };
+
+        edgeOptions.length = length(edgeOptions);
+        edgeOptions.opacity = opacity(edgeOptions.length);
 
         edgeOptions = TheGraph.merge(TheGraph.config.graph.edge, edgeOptions);
         return TheGraph.factories.graph.createGraphEdge.call(this, edgeOptions);
@@ -681,6 +701,10 @@ module.exports.register = function (context) {
           showContext: self.props.showContext,
           allowEdgeStart: self.props.allowEdgeStart,
         };
+
+        expEdge.length = length(expEdge);
+        expEdge.opacity = opacity(expEdge.length);
+
         expEdge = TheGraph.merge(TheGraph.config.graph.inportEdge, expEdge);
         edges.unshift(TheGraph.factories.graph.createGraphEdge.call(this, expEdge));
         return TheGraph.factories.graph.createGraphNode.call(this, expNode);
@@ -757,6 +781,10 @@ module.exports.register = function (context) {
           showContext: self.props.showContext,
           allowEdgeStart: self.props.allowEdgeStart,
         };
+
+        expEdge.length = length(expEdge);
+        expEdge.opacity = opacity(expEdge.length);
+
         expEdge = TheGraph.merge(TheGraph.config.graph.outportEdge, expEdge);
         edges.unshift(TheGraph.factories.graph.createGraphEdge.call(this, expEdge));
         return TheGraph.factories.graph.createGraphNode.call(this, expNode);
