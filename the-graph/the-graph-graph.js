@@ -267,24 +267,30 @@ module.exports.register = function (context) {
           }
 
           var i, port, len;
-          for (i=0, len=component.outports.length; i<len; i++) {
+
+          var top = TheGraph.config.nodePaddingTop;
+          var height = node.metadata.height - top;
+
+          len = component.outports.length > component.inports.length ? component.outports.length : component.inports.length
+
+          for (i=0; i<component.outports.length; i++) {
             port = component.outports[i];
             if (!port.name) { continue; }
             outports[port.name] = {
               label: port.name,
               type: port.type,
               x: node.metadata.width - 3,
-              y: node.metadata.height / (len+1) * (i+1)
+              y: (height / (len+1) * (i+1)) + top
             };
           }
-          for (i=0, len=component.inports.length; i<len; i++) {
+          for (i=0; i<component.inports.length; i++) {
             port = component.inports[i];
             if (!port.name) { continue; }
             inports[port.name] = {
               label: port.name,
               type: port.type,
               x: 3,
-              y: node.metadata.height / (len+1) * (i+1)
+              y: (height / (len+1) * (i+1)) + top
             };
           }
         }
