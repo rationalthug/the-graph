@@ -271,7 +271,7 @@ module.exports.register = function (context) {
           var i, port, len;
 
           var top = TheGraph.config.nodePaddingTop;
-          var height = node.metadata.height - top;
+          // var height = node.metadata.height - top;
 
           len = component.outports.length > component.inports.length ? component.outports.length : component.inports.length
 
@@ -300,6 +300,10 @@ module.exports.register = function (context) {
             node.metadata.width = nodeWidth;
           }
 
+          var portCount = Math.max(component.inports.length, component.outports.length);
+          var height = TheGraph.config.nodeHeight + (portCount * TheGraph.config.nodeHeightIncrement);
+          var nodeHeight = height + TheGraph.config.nodePaddingTop;
+
           for (i=0; i<component.outports.length; i++) {
             port = component.outports[i];
             if (!port.name) { continue; }
@@ -326,7 +330,8 @@ module.exports.register = function (context) {
         ports = {
           inports,
           outports,
-          nodeWidth
+          nodeWidth,
+          nodeHeight
         };
         this.portInfo[processName] = ports;
       }
@@ -522,12 +527,7 @@ module.exports.register = function (context) {
 
         if (TheGraph.config.autoSizeNode && componentInfo) {
           node.metadata.width = ports.nodeWidth;
-          // Adjust node height based on number of ports.
-          var portCount = Math.max(componentInfo.inports.length, componentInfo.outports.length);
-          if (portCount > TheGraph.config.maxPortCount) {
-            var diff = portCount - TheGraph.config.maxPortCount;
-            node.metadata.height = TheGraph.config.nodeHeight + (diff * TheGraph.config.nodeHeightIncrement);
-          }
+          node.metadata.height = ports.nodeHeight
         }
         if (!node.metadata.label || node.metadata.label === "") {
           node.metadata.label = key;
