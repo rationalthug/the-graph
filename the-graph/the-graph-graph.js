@@ -251,6 +251,8 @@ module.exports.register = function (context) {
     portInfo: {},
     getPorts: function (graph, processName, componentName) {
       var node = graph.getNode(processName);
+      var maxInportLength = 0;
+      var maxOutportLength = 0;
 
       var ports = this.portInfo[processName];
       if (!ports) {
@@ -273,9 +275,35 @@ module.exports.register = function (context) {
 
           len = component.outports.length > component.inports.length ? component.outports.length : component.inports.length
 
+          const maxOutportLength = (component.outports.length > 0) ? component.outports.reduce((prev, next) => {
+            const prevLength = prev.name.length
+            const nextLength = next.name.length
+
+            return nextLength > prevLength ? next : prev
+          }).name.length : 0
+          const maxInportLength = (component.inports.length > 0) ? component.inports.reduce((prev, next) => {
+            const prevLength = prev.name.length
+            const nextLength = next.name.length
+
+            return nextLength > prevLength ? next : prev
+          }).name.length : 0
+
+          var inLength = maxInportLength * 4;
+          inLength = inLength <  30 ? 30 : inLength;
+
+          var outLength = maxOutportLength * 4;
+          outLength = outLength <  30 ? 30 : outLength;
+
+          var nodeWidth = inLength + outLength + 12
+
+          if (nodeWidth > node.metadata.width) {
+            node.metadata.width = nodeWidth;
+          }
+
           for (i=0; i<component.outports.length; i++) {
             port = component.outports[i];
             if (!port.name) { continue; }
+
             outports[port.name] = {
               label: port.name,
               type: port.type,
@@ -286,6 +314,7 @@ module.exports.register = function (context) {
           for (i=0; i<component.inports.length; i++) {
             port = component.inports[i];
             if (!port.name) { continue; }
+
             inports[port.name] = {
               label: port.name,
               type: port.type,
@@ -295,8 +324,9 @@ module.exports.register = function (context) {
           }
         }
         ports = {
-          inports: inports,
-          outports: outports
+          inports,
+          outports,
+          nodeWidth
         };
         this.portInfo[processName] = ports;
       }
@@ -487,7 +517,11 @@ module.exports.register = function (context) {
           node.metadata.width = TheGraph.config.nodeWidth;
         }
         node.metadata.height = TheGraph.config.nodeHeight;
+
+        var ports = self.getPorts(graph, key, node.component)
+
         if (TheGraph.config.autoSizeNode && componentInfo) {
+          node.metadata.width = ports.nodeWidth;
           // Adjust node height based on number of ports.
           var portCount = Math.max(componentInfo.inports.length, componentInfo.outports.length);
           if (portCount > TheGraph.config.maxPortCount) {
