@@ -273,7 +273,7 @@ module.exports.register = function (context) {
             outports[port.name] = {
               label: port.name,
               type: port.type,
-              x: node.metadata.width,
+              x: node.metadata.width - 3,
               y: node.metadata.height / (len+1) * (i+1)
             };
           }
@@ -283,7 +283,7 @@ module.exports.register = function (context) {
             inports[port.name] = {
               label: port.name,
               type: port.type,
-              x: 0,
+              x: 3,
               y: node.metadata.height / (len+1) * (i+1)
             };
           }
