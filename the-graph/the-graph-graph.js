@@ -304,6 +304,50 @@ module.exports.register = function (context) {
           var height = TheGraph.config.nodeHeight + (portCount * TheGraph.config.nodeHeightIncrement);
           var nodeHeight = height + TheGraph.config.nodePaddingTop;
 
+          // get the port connections
+          var connections = {
+              inports: {},
+              outports: {}
+          };
+          // get edge & iip connections
+          graph.edges.concat(graph.initializers).forEach(function (conn) {
+            var total;
+
+            if (conn.from && conn.from.node === processName) {
+                total = connections.outports[conn.from.port];
+                // if there already is a connection for the port then add 1
+                connections.outports[conn.from.port] = total ? total + 1 : 1;
+            }
+            else if (conn.to.node === processName) {
+                total = connections.inports[conn.to.port];
+                // if there already is a connection for the port then add 1
+                connections.inports[conn.to.port] = total ? total + 1 : 1;
+            }
+          });
+
+          // get exported ports
+          Object.keys(graph.inports).forEach(function (key) {
+            var value = graph.inports[key];
+            var total;
+
+            if (value.process === processName) {
+                total = connections.inports[value.port];
+                // if there already is a connection for the port then add 1
+                connections.inports[value.port] = total ? total + 1 : 1;
+            }
+          });
+          // get exported ports
+          Object.keys(graph.outports).forEach(function (key) {
+              var value = graph.outports[key];
+              var total;
+
+              if (value.process === processName) {
+                  total = connections.outports[value.port];
+                  // if there already is a connection for the port then add 1
+                  connections.outports[value.port] = total ? total + 1 : 1;
+              }
+          });
+
           for (i=0; i<component.outports.length; i++) {
             port = component.outports[i];
             if (!port.name) { continue; }
@@ -311,6 +355,7 @@ module.exports.register = function (context) {
             outports[port.name] = {
               label: port.name,
               type: port.type,
+              isConnected: connections.outports[port.name] > 0,
               x: node.metadata.width - 3,
               y: (height / (len+1) * (i+1)) + top
             };
@@ -322,6 +367,7 @@ module.exports.register = function (context) {
             inports[port.name] = {
               label: port.name,
               type: port.type,
+              isConnected: connections.inports[port.name] > 0,
               x: 3,
               y: (height / (len+1) * (i+1)) + top
             };
@@ -527,7 +573,7 @@ module.exports.register = function (context) {
 
         if (TheGraph.config.autoSizeNode && componentInfo) {
           node.metadata.width = ports.nodeWidth;
-          node.metadata.height = ports.nodeHeight
+          node.metadata.height = ports.nodeHeight;
         }
         if (!node.metadata.label || node.metadata.label === "") {
           node.metadata.label = key;

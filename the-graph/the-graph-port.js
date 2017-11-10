@@ -177,7 +177,7 @@ module.exports.register = function (context) {
       var arc = TheGraph.factories.port.createPortArc.call(this, arcOptions);
 
       var innerCircleOptions = {
-        className: "port-circle-small fill route"+this.props.route,
+        className: "port-circle-small stroke route"+ (this.props.route || '0') + (this.props.isConnected ? ' fill' : ' empty-fill'),
         r: r - 1.5
       };
 
