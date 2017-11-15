@@ -696,7 +696,7 @@ module.exports.register = function (context) {
         var target = graph.getNode(iip.to.node);
         if (!target) { return; }
 
-        var targetPort = self.getNodeInport(graph, iip.to.node, iip.to.port, 0, target.component);
+        var targetPort = self.getNodeInport(graph, iip.to.node, iip.to.port, 0, target.component)
         var tX = target.metadata.x;
         var tY = target.metadata.y + targetPort.y;
 
@@ -705,6 +705,7 @@ module.exports.register = function (context) {
         var label = data === true || data === false || type === "number" || type === "string" ? data : type;
 
         var iipOptions = {
+          key: iip.to.node + targetPort.label + targetPort.x + targetPort.y,
           graph: graph,
           label: label,
           x: tX,

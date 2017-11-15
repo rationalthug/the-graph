@@ -665,11 +665,11 @@ module.exports.register = function (context) {
       var svgOptions = TheGraph.merge(TheGraph.config.app.svg, { width: this.state.width, height: this.state.height });
       var svg = TheGraph.factories.app.createAppSvg.call(this, svgOptions, svgContents);
 
-      var canvasOptions = TheGraph.merge(TheGraph.config.app.canvas, { width: this.state.width, height: this.state.height });
-      var canvas = TheGraph.factories.app.createAppCanvas.call(this, canvasOptions);
+      // var canvasOptions = TheGraph.merge(TheGraph.config.app.canvas, { width: this.state.width, height: this.state.height });
+      // var canvas = TheGraph.factories.app.createAppCanvas.call(this, canvasOptions);
 
       var appContents = [
-        canvas,
+        // canvas,
         svg
       ];
       var containerOptions = TheGraph.merge(TheGraph.config.app.container, { style: { width: this.state.width, height: this.state.height } });
