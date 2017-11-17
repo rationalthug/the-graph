@@ -6,12 +6,12 @@ var Tooltip = {
   showTooltip: function (event) {
     if ( !this.shouldShowTooltip() ) { return; }
 
-    var tooltipEvent = new CustomEvent('the-graph-tooltip', { 
+    var tooltipEvent = new CustomEvent('the-graph-tooltip', {
       detail: {
         tooltip: this.props.label,
         x: event.clientX,
         y: event.clientY
-      }, 
+      },
       bubbles: true
     });
     ReactDOM.findDOMNode(this).dispatchEvent(tooltipEvent);
@@ -19,14 +19,17 @@ var Tooltip = {
   hideTooltip: function (event) {
     if ( !this.shouldShowTooltip() ) { return; }
 
-    var tooltipEvent = new CustomEvent('the-graph-tooltip-hide', { 
+    var tooltipEvent = new CustomEvent('the-graph-tooltip-hide', {
       bubbles: true
     });
-    if (this.isMounted()) {
+    if (this.state.mounted) {
       ReactDOM.findDOMNode(this).dispatchEvent(tooltipEvent);
     }
   },
   componentDidMount: function () {
+    this.setState({
+      mounted: true
+    })
     if (navigator && navigator.userAgent.indexOf("Firefox") !== -1) {
       // HACK Ff does native tooltips on svg elements
       return;
