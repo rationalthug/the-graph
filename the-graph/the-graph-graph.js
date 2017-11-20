@@ -273,15 +273,15 @@ module.exports.register = function (context) {
           var top = TheGraph.config.nodePaddingTop;
           // var height = node.metadata.height - top;
 
-          len = component.outports.length > component.inports.length ? component.outports.length : component.inports.length
+          len = component.outPorts.length > component.inPorts.length ? component.outPorts.length : component.inPorts.length
 
-          const maxOutportLength = (component.outports.length > 0) ? component.outports.reduce((prev, next) => {
+          const maxOutportLength = (component.outPorts.length > 0) ? component.outPorts.reduce((prev, next) => {
             const prevLength = prev.name.length
             const nextLength = next.name.length
 
             return nextLength > prevLength ? next : prev
           }).name.length : 0
-          const maxInportLength = (component.inports.length > 0) ? component.inports.reduce((prev, next) => {
+          const maxInportLength = (component.inPorts.length > 0) ? component.inPorts.reduce((prev, next) => {
             const prevLength = prev.name.length
             const nextLength = next.name.length
 
@@ -300,7 +300,7 @@ module.exports.register = function (context) {
             node.metadata.width = nodeWidth;
           }
 
-          var portCount = Math.max(component.inports.length, component.outports.length);
+          var portCount = Math.max(component.inPorts.length, component.outPorts.length);
           var height = TheGraph.config.nodeHeight + (portCount * TheGraph.config.nodeHeightIncrement);
           var nodeHeight = height + TheGraph.config.nodePaddingTop;
 
@@ -348,8 +348,8 @@ module.exports.register = function (context) {
               }
           });
 
-          for (i=0; i<component.outports.length; i++) {
-            port = component.outports[i];
+          for (i=0; i<component.outPorts.length; i++) {
+            port = component.outPorts[i];
             if (!port.name) { continue; }
 
             outports[port.name] = {
@@ -360,8 +360,8 @@ module.exports.register = function (context) {
               y: (height / (len+1) * (i+1)) + top
             };
           }
-          for (i=0; i<component.inports.length; i++) {
-            port = component.inports[i];
+          for (i=0; i<component.inPorts.length; i++) {
+            port = component.inPorts[i];
             if (!port.name) { continue; }
 
             inports[port.name] = {
