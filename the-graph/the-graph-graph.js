@@ -271,7 +271,6 @@ module.exports.register = function (context) {
           var i, port, len;
 
           var top = TheGraph.config.nodePaddingTop;
-          // var height = node.metadata.height - top;
 
           len = component.outPorts.length > component.inPorts.length ? component.outPorts.length : component.inPorts.length
 
