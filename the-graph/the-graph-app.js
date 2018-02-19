@@ -152,13 +152,23 @@ module.exports.register = function (context) {
       };
     },
     getInitialState: function() {
-      // Autofit
-      var fit = TheGraph.findFit(this.props.graph, this.props.width, this.props.height);
+      if (this.props.autoFit) {
+        // Autofit
+        var fit = TheGraph.findFit(this.props.graph, this.props.width, this.props.height);
+        var x = fit.x
+        var y = fit.y
+        var scale = fit.scale
+      }
+      else {
+        var x = this.props.x
+        var y = this.props.y
+        var scale = this.props.scale
+      }
 
       return {
-        x: fit.x,
-        y: fit.y,
-        scale: fit.scale,
+        x: x,
+        y: y,
+        scale: scale,
         width: this.props.width,
         height: this.props.height,
         minZoom: this.props.minZoom,
