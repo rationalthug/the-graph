@@ -188,8 +188,8 @@ module.exports.register = function (context) {
       domNode.removeEventListener("pancanel", this.onTrackEnd);
 
       // Snap to grid
-      var snapToGrid = true;
-      var snap = TheGraph.config.node.snap / 2;
+      var snap = this.props.snap || TheGraph.config.node.snap / 2;
+      var snapToGrid = snap !== 1;
       if (snapToGrid) {
         var x, y;
         if (this.props.export) {
