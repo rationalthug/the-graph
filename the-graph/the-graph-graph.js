@@ -128,7 +128,7 @@ module.exports.register = function (context) {
         previous.removeListener("removeEdge", this.resetPortRoute);
         previous.removeListener("removeInitial", this.resetPortRoute);
 
-        previous.removeListener("changeNode", this.markDirty);
+        previous.removeListener("changeNode", this.onChangeNode);
         previous.removeListener("changeInport", this.markDirty);
         previous.removeListener("changeOutport", this.markDirty);
         previous.removeListener("endTransaction", this.markDirty);
@@ -141,10 +141,20 @@ module.exports.register = function (context) {
         next.on("removeInitial", this.resetPortRoute);
 
         // Listen to fbp-graph graph object's events
-        next.on("changeNode", this.markDirty);
+        next.on("changeNode", this.onChangeNode);
         next.on("changeInport", this.markDirty);
         next.on("changeOutport", this.markDirty);
         next.on("endTransaction", this.markDirty);
+      }
+    },
+    triggerMoveNode: null,
+    onChangeNode: function(node, before) {
+      if (!this.triggerMoveNode) {
+        this.triggerMoveNode = function () {
+          this.markDirty();
+          delete this.triggerMoveNode;
+        }.bind(this);
+        window.setTimeout(this.triggerMoveNode, 0);
       }
     },
     edgePreview: null,
