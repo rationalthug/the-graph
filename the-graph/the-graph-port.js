@@ -14,7 +14,8 @@ module.exports.register = function (context) {
       className: "port-circle-bg"
     },
     arc: {
-      className: "port-arc"
+      className: "port-arc",
+      ref: "portArc"
     },
     innerCircle: {
       ref: "circleSmall"
@@ -49,10 +50,15 @@ module.exports.register = function (context) {
       var domNode = ReactDOM.findDOMNode(this);
 
       // Preview edge start
-      domNode.addEventListener("tap", this.edgeStart);
-      domNode.addEventListener("panstart", this.edgeStart);
+      this.refs.circleSmall.addEventListener("tap", this.edgeStart);
+      this.refs.circleSmall.addEventListener("panstart", this.edgeStart);
+      this.refs.portArc.addEventListener("tap", this.edgeStart);
+      this.refs.portArc.addEventListener("panstart", this.edgeStart);
       // Make edge
-      domNode.addEventListener("panend", this.triggerDropOnTarget);
+      this.refs.circleSmall.addEventListener("panend", this.triggerDropOnTarget);
+      this.refs.portArc.addEventListener("panend", this.triggerDropOnTarget);
+
+
       domNode.addEventListener("the-graph-edge-drop", this.edgeStart);
 
       // Show context menu
