@@ -155,8 +155,8 @@ module.exports.register = function (context) {
       this.setState({ lastTrackX: x , lastTrackY: y });
 
       var scale = this.props.app.state.scale;
-      var deltaX = Math.round( movementX / scale );
-      var deltaY = Math.round( movementY / scale );
+      var deltaX = movementX / scale;
+      var deltaY = movementY / scale;
 
       // Fires a change event on fbp-graph graph, which triggers redraw
       if (this.props.export) {
