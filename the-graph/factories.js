@@ -1,7 +1,6 @@
 const uuidv4 = require('uuid/v4')
 
 // Standard functions for creating SVG/HTML elements
-const usedKeys = {}
 exports.createGroup = function(options, content) {
   var args = [options]
 
