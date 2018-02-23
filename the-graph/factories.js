@@ -6,33 +6,48 @@ exports.createGroup = function(options, content) {
 
   if (options.children) {
     options.children = React.Children.map(options.children, (child) => {
-      const gKey = child.key || uuidv4()
-      const newGProps = Object.keys(child.props).reduce((props, p) => {
-        if (p !== 'key') {
-          props[p] = child.props[p]
-        }
-        else {
-          props[p] = gKey
-        }
-        return props
-      }, {})
-      return React.cloneElement(child, newGProps)
+      let newChild
+      if (child.key) {
+        newChild = child
+      }
+      else {
+        const gKey = uuidv4()
+        const newGProps = Object.keys(child.props).reduce((props, p) => {
+          if (p !== 'key') {
+            props[p] = child.props[p]
+          }
+          else {
+            props[p] = gKey
+          }
+          return props
+        }, {})
+        newChild = React.cloneElement(child, newGProps)
+      }
+      return newChild
     })
   }
 
   if (Array.isArray(content)) {
     content = content.map((child) => {
-      const cKey = child.key || uuidv4()
-      const newCProps = Object.keys(child.props).reduce((props, p) => {
-        if (p !== 'key') {
-          props[p] = child.props[p]
-        }
-        else {
-          props[p] = cKey
-        }
-        return props
-      }, {})
-      return React.cloneElement(child, newCProps)
+      let newChild
+
+      if (child.key) {
+        newChild = child
+      }
+      else {
+        const cKey = uuidv4()
+        const newCProps = Object.keys(child.props).reduce((props, p) => {
+          if (p !== 'key') {
+            props[p] = child.props[p]
+          }
+          else {
+            props[p] = cKey
+          }
+          return props
+        }, {})
+        newChild = React.cloneElement(child, newCProps)
+      }
+      return newChild
     })
   }
 
