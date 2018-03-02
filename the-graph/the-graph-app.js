@@ -510,7 +510,9 @@ module.exports.register = function (context) {
       this.props.onEdgeSelection();
     },
     renderGraph: function () {
-      this.refs.graph.markDirty();
+      if (this.refs.graph) {
+        this.refs.graph.markDirty();
+      }
     },
     componentDidUpdate: function (prevProps, prevState) {
       this.renderCanvas(this.bgContext);
