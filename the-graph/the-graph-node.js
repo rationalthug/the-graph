@@ -13,15 +13,15 @@ module.exports.register = function (context) {
     },
     border: {
       className: "node-border drag",
-      rx: TheGraph.config.nodeRadius,
-      ry: TheGraph.config.nodeRadius
+      rx: 3,
+      ry: 3
     },
     innerRect: {
       className: "node-rect drag",
       x: 3,
       y: 3,
-      rx: TheGraph.config.nodeRadius - 2,
-      ry: TheGraph.config.nodeRadius - 2
+      rx: 3,
+      ry: 3
     },
     icon: {
       ref: "icon",
