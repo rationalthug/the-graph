@@ -171,7 +171,7 @@ module.exports.register = function (context) {
       var inArc = arcs.inport;
       var outArc = arcs.outport;
       if (highlightPort && highlightPort.isIn === this.props.isIn && (highlightPort.type === this.props.port.type || this.props.port.type === 'any')) {
-        r = 6;
+        r = 5;
         inArc = arcs.inportBig;
         outArc = arcs.outportBig;
       }
