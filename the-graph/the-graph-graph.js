@@ -210,7 +210,7 @@ module.exports.register = function (context) {
       if (event.gesture) {
         event = event.gesture.srcEvent; // unpack hammer.js gesture event
       }
-
+      
       var x = event.x || event.clientX || 0;
       var y = event.y || event.clientY || 0;
       if (event.touches && event.touches.length) {
@@ -218,8 +218,8 @@ module.exports.register = function (context) {
         y = event.touches[0].clientY;
       }
 
-      x -= this.props.app.state.offsetX || 0;
-      y -= this.props.app.state.offsetY || 0;
+      // x -= this.props.app.state.offsetX || 0;
+      // y -= this.props.app.state.offsetY || 0;
       var scale = this.props.app.state.scale;
       this.setState({
         edgePreviewX: (x - this.props.app.state.x) / scale,
