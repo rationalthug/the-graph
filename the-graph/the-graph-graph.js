@@ -1,5 +1,4 @@
 module.exports.register = function (context) {
-
   var TheGraph = context.TheGraph;
 
   TheGraph.config.graph = {
@@ -223,26 +222,33 @@ module.exports.register = function (context) {
         this.markDirty();
       }
     },
+    renderPreviewEdgePending: false,
     renderPreviewEdge: function (event) {
-      if (event.gesture) {
-        event = event.gesture.srcEvent; // unpack hammer.js gesture event
+      if (!this.renderPreviewEdgePending) {
+        this.renderPreviewEdgePending = true
+        requestAnimationFrame(() => {
+          this.renderPreviewEdgePending = false
+          if (event.gesture) {
+            event = event.gesture.srcEvent; // unpack hammer.js gesture event
+          }
+          
+          var x = event.x || event.clientX || 0;
+          var y = event.y || event.clientY || 0;
+          if (event.touches && event.touches.length) {
+            x = event.touches[0].clientX;
+            y = event.touches[0].clientY;
+          }
+    
+          // x -= this.props.app.state.offsetX || 0;
+          // y -= this.props.app.state.offsetY || 0;
+          var scale = this.props.app.state.scale;
+          this.setState({
+            edgePreviewX: (x - this.props.app.state.x) / scale,
+            edgePreviewY: (y - this.props.app.state.y) / scale
+          });
+          this.markDirty();
+        })
       }
-      
-      var x = event.x || event.clientX || 0;
-      var y = event.y || event.clientY || 0;
-      if (event.touches && event.touches.length) {
-        x = event.touches[0].clientX;
-        y = event.touches[0].clientY;
-      }
-
-      // x -= this.props.app.state.offsetX || 0;
-      // y -= this.props.app.state.offsetY || 0;
-      var scale = this.props.app.state.scale;
-      this.setState({
-        edgePreviewX: (x - this.props.app.state.x) / scale,
-        edgePreviewY: (y - this.props.app.state.y) / scale
-      });
-      this.markDirty();
     },
     addEdge: function (edge) {
       this.props.graph.addEdge(edge.from.process, edge.from.port, edge.to.process, edge.to.port, edge.metadata);
