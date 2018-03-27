@@ -191,16 +191,33 @@ module.exports.register = function (context) {
       var appDomNode = ReactDOM.findDOMNode(this.props.app);
       appDomNode.addEventListener("mousemove", this.renderPreviewEdge);
       appDomNode.addEventListener("panmove", this.renderPreviewEdge);
+      appDomNode.addEventListener("mouseup", this.dropPreviewEdge);
       // TODO tap to add new node here
       appDomNode.addEventListener("tap", this.cancelPreviewEdge);
 
       this.setState({edgePreview: edge});
+    },
+    dropPreviewEdge: function(event) {
+      var eventType = 'the-graph-edge-drop';
+      var dropEvent = new CustomEvent(eventType, {
+        detail: null,
+        bubbles: true
+      });
+      event.target.dispatchEvent(dropEvent);
+
+      var appDomNode = ReactDOM.findDOMNode(this.props.app);
+      var listener = function () {
+        this.cancelPreviewEdge();
+        appDomNode.removeEventListener(eventType, listener);
+      }.bind(this);
+      appDomNode.addEventListener(eventType, listener);
     },
     cancelPreviewEdge: function (event) {
       var appDomNode = ReactDOM.findDOMNode(this.props.app);
       appDomNode.removeEventListener("mousemove", this.renderPreviewEdge);
       appDomNode.removeEventListener("panmove", this.renderPreviewEdge);
       appDomNode.removeEventListener("tap", this.cancelPreviewEdge);
+      appDomNode.removeEventListener("mouseup", this.dropPreviewEdge);
       if (this.state.edgePreview) {
         this.setState({edgePreview: null});
         this.markDirty();
