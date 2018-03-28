@@ -208,7 +208,7 @@ module.exports.register = function (context) {
           (this.props.selected ? " selected" : "")+
           (this.props.animated ? " animated" : "")+
           (this.props.nodeSelected ? " node-selected" : ""),
-        id: this.props.edgeID,
+        id: this.props.connection,
         title: this.props.label,
         style: (this.props.selected || this.props.nodeSelected) ? {} :
           {opacity: this.props.opacity || 1}
