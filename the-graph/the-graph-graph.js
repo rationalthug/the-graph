@@ -162,6 +162,9 @@ module.exports.register = function (context) {
 
       // Port that triggered this
       var port = event.detail.port;
+      // Initial mouse coords
+      var x = event.detail.x;
+      var y = event.detail.y
 
       // Complete edge if this is the second tap and ports are compatible
       if (this.state.edgePreview && this.state.edgePreview.isIn !== event.detail.isIn) {
@@ -194,7 +197,17 @@ module.exports.register = function (context) {
       // TODO tap to add new node here
       appDomNode.addEventListener("tap", this.cancelPreviewEdge);
 
-      this.setState({edgePreview: edge});
+      var newState = {
+        edgePreview: edge
+      }
+
+      var scale = this.props.app.state.scale
+      
+      if (!isNaN(x) && !isNaN(y))  {
+        newState.edgePreviewX = (x - this.props.app.state.x) / scale,
+        newState.edgePreviewY = (y - this.props.app.state.y) / scale
+      }
+      this.setState(newState)
     },
     dropPreviewEdge: function(event) {
       var eventType = 'the-graph-edge-drop';
@@ -224,31 +237,24 @@ module.exports.register = function (context) {
     },
     renderPreviewEdgePending: false,
     renderPreviewEdge: function (event) {
-      if (!this.renderPreviewEdgePending) {
-        this.renderPreviewEdgePending = true
-        requestAnimationFrame(() => {
-          this.renderPreviewEdgePending = false
-          if (event.gesture) {
-            event = event.gesture.srcEvent; // unpack hammer.js gesture event
-          }
-          
-          var x = event.x || event.clientX || 0;
-          var y = event.y || event.clientY || 0;
-          if (event.touches && event.touches.length) {
-            x = event.touches[0].clientX;
-            y = event.touches[0].clientY;
-          }
-    
-          // x -= this.props.app.state.offsetX || 0;
-          // y -= this.props.app.state.offsetY || 0;
-          var scale = this.props.app.state.scale;
-          this.setState({
-            edgePreviewX: (x - this.props.app.state.x) / scale,
-            edgePreviewY: (y - this.props.app.state.y) / scale
-          });
-          this.markDirty();
-        })
+      if (event.gesture) {
+        event = event.gesture.srcEvent; // unpack hammer.js gesture event
       }
+      
+      var x = event.x || event.clientX || 0;
+      var y = event.y || event.clientY || 0;
+      if (event.touches && event.touches.length) {
+        x = event.touches[0].clientX;
+        y = event.touches[0].clientY;
+      }
+      // x -= this.props.app.state.offsetX || 0;
+      // y -= this.props.app.state.offsetY || 0;
+      var scale = this.props.app.state.scale;
+      this.setState({
+        edgePreviewX: (x - this.props.app.state.x) / scale,
+        edgePreviewY: (y - this.props.app.state.y) / scale
+      });
+      this.markDirty();
     },
     addEdge: function (edge) {
       this.props.graph.addEdge(edge.from.process, edge.from.port, edge.to.process, edge.to.port, edge.metadata);
@@ -978,7 +984,7 @@ module.exports.register = function (context) {
         var edgePreviewOptions;
         if (edgePreview.from) {
           var source = graph.getNode(edgePreview.from.process);
-          var sourcePort = this.getNodeOutport(graph, edgePreview.from.process, edgePreview.from.port);
+          var sourcePort = this.getNodeOutport(graph, edgePreview.from.process, edgePreview.from.port)
           edgePreviewOptions = {
             sX: source.metadata.x + source.metadata.width,
             sY: source.metadata.y + sourcePort.y,

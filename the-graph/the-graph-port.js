@@ -138,13 +138,20 @@ module.exports.register = function (context) {
       // Don't tap graph
       if (event.stopPropagation) { event.stopPropagation(); }
 
+      var detail = {
+        isIn: this.props.isIn,
+        port: this.props.port,
+        // process: this.props.processKey,
+        route: this.props.route,
+      }
+
+      if (event.gesture && event.gesture.center) {
+        detail.x = event.gesture.center.x;
+        detail.y = event.gesture.center.y;
+      }
+
       var edgeStartEvent = new CustomEvent('the-graph-edge-start', {
-        detail: {
-          isIn: this.props.isIn,
-          port: this.props.port,
-          // process: this.props.processKey,
-          route: this.props.route
-        },
+        detail: detail,
         bubbles: true
       });
       ReactDOM.findDOMNode(this).dispatchEvent(edgeStartEvent);
