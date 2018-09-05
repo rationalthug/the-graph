@@ -745,7 +745,6 @@ module.exports.register = function (context) {
         var label = data === true || data === false || type === "number" || type === "string" ? data : type;
 
         var iipOptions = {
-          key: iip.to.node + targetPort.label + targetPort.x + targetPort.y,
           graph: graph,
           label: label,
           x: tX,
