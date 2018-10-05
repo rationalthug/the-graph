@@ -519,6 +519,12 @@ module.exports.register = function (context) {
       if (!prevState || prevState.x!==this.state.x || prevState.y!==this.state.y || prevState.scale!==this.state.scale) {
         this.onPanScale();
       }
+      if (prevProps && (prevProps.x !== this.props.x || prevProps.y !== this.props.y)) {
+        this.setState({
+          x: this.props.x,
+          y: this.props.y
+        })
+      }
     },
     renderCanvas: function (c) {
       // Comment this line to go plaid
