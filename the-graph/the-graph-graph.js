@@ -703,7 +703,7 @@ module.exports.register = function (context) {
           edge.to.port.toUpperCase() +
           (edge.to.hasOwnProperty('index') ? '['+edge.to.index+']' : '') + ' ' +
           edge.to.node + '()';
-        var connection = '{"edgeInfo": {"node_FROM": "' + edge.from.node + '", "port_FROM": "' + edge.from.port + '", "index_FROM": ' + (edge.from.index === undefined ? false : edge.from.index) + ', "node_TO": "' + edge.to.node + '", "port_TO": "' + edge.to.port + '", "index_TO": ' + (edge.to.index === undefined ? false : edge.to.index) + '}}'
+        var connection = 'node_FROM---' + edge.from.node + '--port_FROM---' + edge.from.port + '--index_FROM---' + (edge.from.index === undefined ? false : edge.from.index) + '--node_TO---' + edge.to.node + '--port_TO---' + edge.to.port + '--index_TO---' + (edge.to.index === undefined ? false : edge.to.index)
 
         var edgeOptions = {
           key: key,
