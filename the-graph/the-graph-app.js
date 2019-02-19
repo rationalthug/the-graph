@@ -515,14 +515,28 @@ module.exports.register = function (context) {
       }
     },
     componentDidUpdate: function (prevProps, prevState) {
+      var newState = {}
       this.renderCanvas(this.bgContext);
       if (!prevState || prevState.x!==this.state.x || prevState.y!==this.state.y || prevState.scale!==this.state.scale) {
         this.onPanScale();
       }
       if (prevProps && (prevProps.x !== this.props.x || prevProps.y !== this.props.y)) {
-        this.setState({
+        newState = {
+          ...newState,
           x: this.props.x,
           y: this.props.y
+        }
+      }
+      if (prevState && (prevState.width !== this.props.width || prevState.height !== this.props.height)) {
+        newState = {
+          ...newState,
+          width: this.props.width,
+          height: this.props.height
+        }
+      }
+      if (Object.keys(newState).length > 0 ) {
+        this.setState(() => {
+          return newState
         })
       }
     },
