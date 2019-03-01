@@ -167,10 +167,9 @@ module.exports.register = function (context) {
       event.relatedTarget.dispatchEvent(dropEvent);
     },
     render: function() {
-      var style;
-      if (this.props.label.length > 7) {
-        var fontSize = 6 * (30 / (4 * this.props.label.length));
-        style = { 'fontSize': fontSize+'px' };
+      var label = this.props.label
+      if (label.length > 12) {
+        label = label.substring(0, 12) + '...'
       }
       var r = 4;
       // Highlight matching ports
@@ -199,8 +198,7 @@ module.exports.register = function (context) {
 
       var labelTextOptions = {
         x: (this.props.isIn ? 5 : -5),
-        style: style,
-        children: this.props.label
+        children: label
       };
       labelTextOptions = TheGraph.merge(TheGraph.config.port.text, labelTextOptions);
       var labelText = TheGraph.factories.port.createPortLabelText.call(this, labelTextOptions);
