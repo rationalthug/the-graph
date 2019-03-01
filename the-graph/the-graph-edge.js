@@ -159,9 +159,9 @@ module.exports.register = function (context) {
     },
     render: function () {
       var sourceX = this.props.sX;
-      var sourceY = this.props.sY;
+      var sourceY = this.props.sY + 5;
       var targetX = this.props.tX;
-      var targetY = this.props.tY;
+      var targetY = this.props.tY + 5;
 
       // Organic / curved edge
       var c1X, c1Y, c2X, c2Y;
