@@ -400,7 +400,7 @@ module.exports.register = function (context) {
           nodeWidth: width,
           nodeHeight: height,
           x: info.x,
-          y: info.y,
+          y: info.y + 5,
           port: {process:processKey, port:info.label, type:info.type},
           highlightPort: highlightPort,
           route: info.route,
@@ -431,7 +431,7 @@ module.exports.register = function (context) {
           nodeWidth: width,
           nodeHeight: height,
           x: info.x,
-          y: info.y,
+          y: info.y + 5,
           port: {process:processKey, port:info.label, type:info.type},
           highlightPort: highlightPort,
           route: info.route,
@@ -474,7 +474,7 @@ module.exports.register = function (context) {
       var borderRectOptions = TheGraph.merge(TheGraph.config.node.border, { width: this.props.width, height: this.props.height });
       var borderRect = TheGraph.factories.node.createNodeBorderRect.call(this, borderRectOptions);
 
-      var innerRectOptions = TheGraph.merge(TheGraph.config.node.innerRect, { width: this.props.width - 6, height: this.props.height - 6 });
+      var innerRectOptions = TheGraph.merge(TheGraph.config.node.innerRect, { width: this.props.width - 6, height: this.props.height });
       var innerRect = TheGraph.factories.node.createNodeInnerRect.call(this, innerRectOptions);
 
       var inportsOptions = TheGraph.merge(TheGraph.config.node.inports, { children: inportViews });
@@ -485,7 +485,7 @@ module.exports.register = function (context) {
 
       var labelTextOptions = TheGraph.merge(TheGraph.config.node.labelText, {
         x: this.props.width / 2,
-        y: TheGraph.config.node.labelText ? TheGraph.config.node.labelText.y :this.props.height + 15,
+        y: TheGraph.config.node.labelText.y + 2,
         children: label
       });
       var labelText = TheGraph.factories.node.createNodeLabelText.call(this, labelTextOptions);
