@@ -521,18 +521,12 @@ module.exports.register = function (context) {
         this.onPanScale();
       }
       if (prevProps && (prevProps.x !== this.props.x || prevProps.y !== this.props.y)) {
-        newState = {
-          ...newState,
-          x: this.props.x,
-          y: this.props.y
-        }
+        newState.x = this.props.x;
+        newState.y = this.props.y;
       }
       if (prevState && (prevState.width !== this.props.width || prevState.height !== this.props.height)) {
-        newState = {
-          ...newState,
-          width: this.props.width,
-          height: this.props.height
-        }
+        newState.width = this.props.width;
+        newState.height = this.props.height;
       }
       if (Object.keys(newState).length > 0 ) {
         this.setState(() => {
