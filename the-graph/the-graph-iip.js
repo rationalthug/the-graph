@@ -44,8 +44,8 @@ module.exports.register = function (context) {
       );
     },
     render: function () {
-      var x = this.props.x;
-      var y = this.props.y;
+      var x = this.props.x + 5;
+      var y = this.props.y + 5;
 
       var path = [
         "M", x, y,
