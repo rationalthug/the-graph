@@ -484,6 +484,9 @@ module.exports.register = function (context) {
       });
     },
     keyDown: function (event) {
+      if (this.props.suspendHotKeys) {
+        return
+      }
       // HACK metaKey global for taps
       if (event.metaKey || event.ctrlKey) {
         TheGraph.metaKeyPressed = true;
@@ -499,6 +502,9 @@ module.exports.register = function (context) {
       }
     },
     keyUp: function (event) {
+      if (this.props.suspendHotKeys) {
+        return
+      }
       // HACK metaKey global for taps
       if (TheGraph.metaKeyPressed) {
         TheGraph.metaKeyPressed = false;
