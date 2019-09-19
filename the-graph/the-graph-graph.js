@@ -78,20 +78,20 @@ module.exports.register = function (context) {
 
   // Graph view
 
-  TheGraph.Graph = React.createFactory( createReactClass({
+  TheGraph.Graph = React.createFactory(createReactClass({
     displayName: "TheGraphGraph",
     mixins: [],
     getDefaultProps: function () {
-        return {
-            library: {},
-            graph: null,
-            app: null,
-            offsetX: 0,
-            offsetY: 0,
-            nodeIcons: {}, // allows overriding icon of a node
-        };
+      return {
+        library: {},
+        graph: null,
+        app: null,
+        offsetX: 0,
+        offsetY: 0,
+        nodeIcons: {}, // allows overriding icon of a node
+      };
     },
-    getInitialState: function() {
+    getInitialState: function () {
       return {
         displaySelectionGroup: true,
         edgePreview: null,
@@ -108,19 +108,19 @@ module.exports.register = function (context) {
       };
     },
     componentDidMount: function () {
-        this.subscribeGraph(null, this.props.graph);
-        ReactDOM.findDOMNode(this).addEventListener("the-graph-node-remove", this.removeNode);
-        this.setState(() => {
-          return {
-            mounted: true
-          }
-        })
+      this.subscribeGraph(null, this.props.graph);
+      ReactDOM.findDOMNode(this).addEventListener("the-graph-node-remove", this.removeNode);
+      this.setState(() => {
+        return {
+          mounted: true
+        }
+      })
     },
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function (nextProps) {
       this.subscribeGraph(this.props.graph, nextProps.graph);
       this.markDirty();
     },
-    subscribeGraph: function(previous, next) {
+    subscribeGraph: function (previous, next) {
       if (previous) {
         previous.removeListener("addEdge", this.resetPortRoute);
         previous.removeListener("changeEdge", this.resetPortRoute);
@@ -147,7 +147,7 @@ module.exports.register = function (context) {
       }
     },
     triggerMoveNode: null,
-    onChangeNode: function(node, before) {
+    onChangeNode: function (node, before) {
       if (!this.triggerMoveNode) {
         this.triggerMoveNode = function () {
           this.markDirty();
@@ -202,14 +202,14 @@ module.exports.register = function (context) {
       }
 
       var scale = this.props.app.state.scale
-      
-      if (!isNaN(x) && !isNaN(y))  {
+
+      if (!isNaN(x) && !isNaN(y)) {
         newState.edgePreviewX = (x - this.props.app.state.x) / scale,
-        newState.edgePreviewY = (y - this.props.app.state.y) / scale
+          newState.edgePreviewY = (y - this.props.app.state.y) / scale
       }
       this.setState(newState)
     },
-    dropPreviewEdge: function(event) {
+    dropPreviewEdge: function (event) {
       var eventType = 'the-graph-edge-drop';
       var dropEvent = new CustomEvent(eventType, {
         detail: null,
@@ -231,7 +231,7 @@ module.exports.register = function (context) {
       appDomNode.removeEventListener("tap", this.cancelPreviewEdge);
       appDomNode.removeEventListener("mouseup", this.dropPreviewEdge);
       if (this.state.edgePreview) {
-        this.setState({edgePreview: null});
+        this.setState({ edgePreview: null });
         this.markDirty();
       }
     },
@@ -240,7 +240,7 @@ module.exports.register = function (context) {
       if (event.gesture) {
         event = event.gesture.srcEvent; // unpack hammer.js gesture event
       }
-      
+
       var x = event.x || event.clientX || 0;
       var y = event.y || event.clientY || 0;
       if (event.touches && event.touches.length) {
@@ -264,7 +264,7 @@ module.exports.register = function (context) {
 
       // Move each group member
       var len = nodes.length;
-      for (var i=0; i<len; i++) {
+      for (var i = 0; i < len; i++) {
         var node = graph.getNode(nodes[i]);
         if (!node) { continue; }
         if (dx !== undefined) {
@@ -277,8 +277,8 @@ module.exports.register = function (context) {
           // Snap to grid
           var snap = TheGraph.config.nodeHeight / 2;
           graph.setNodeMetadata(node.id, {
-            x: Math.round(node.metadata.x/snap) * snap,
-            y: Math.round(node.metadata.y/snap) * snap
+            x: Math.round(node.metadata.x / snap) * snap,
+            y: Math.round(node.metadata.y / snap) * snap
           });
         }
       }
@@ -327,10 +327,10 @@ module.exports.register = function (context) {
           }).name.length : 0
 
           var inLength = maxInportLength * 4;
-          inLength = inLength <  30 ? 30 : inLength;
+          inLength = inLength < 30 ? 30 : inLength;
 
           var outLength = maxOutportLength * 4;
-          outLength = outLength <  30 ? 30 : outLength;
+          outLength = outLength < 30 ? 30 : outLength;
 
           var nodeWidth = inLength + outLength + 12
 
@@ -344,22 +344,22 @@ module.exports.register = function (context) {
 
           // get the port connections
           var connections = {
-              inports: {},
-              outports: {}
+            inports: {},
+            outports: {}
           };
           // get edge & iip connections
           graph.edges.concat(graph.initializers).forEach(function (conn) {
             var total;
 
             if (conn.from && conn.from.node === processName) {
-                total = connections.outports[conn.from.port];
-                // if there already is a connection for the port then add 1
-                connections.outports[conn.from.port] = total ? total + 1 : 1;
+              total = connections.outports[conn.from.port];
+              // if there already is a connection for the port then add 1
+              connections.outports[conn.from.port] = total ? total + 1 : 1;
             }
             else if (conn.to.node === processName) {
-                total = connections.inports[conn.to.port];
-                // if there already is a connection for the port then add 1
-                connections.inports[conn.to.port] = total ? total + 1 : 1;
+              total = connections.inports[conn.to.port];
+              // if there already is a connection for the port then add 1
+              connections.inports[conn.to.port] = total ? total + 1 : 1;
             }
           });
 
@@ -369,24 +369,24 @@ module.exports.register = function (context) {
             var total;
 
             if (value.process === processName) {
-                total = connections.inports[value.port];
-                // if there already is a connection for the port then add 1
-                connections.inports[value.port] = total ? total + 1 : 1;
+              total = connections.inports[value.port];
+              // if there already is a connection for the port then add 1
+              connections.inports[value.port] = total ? total + 1 : 1;
             }
           });
           // get exported ports
           Object.keys(graph.outports).forEach(function (key) {
-              var value = graph.outports[key];
-              var total;
+            var value = graph.outports[key];
+            var total;
 
-              if (value.process === processName) {
-                  total = connections.outports[value.port];
-                  // if there already is a connection for the port then add 1
-                  connections.outports[value.port] = total ? total + 1 : 1;
-              }
+            if (value.process === processName) {
+              total = connections.outports[value.port];
+              // if there already is a connection for the port then add 1
+              connections.outports[value.port] = total ? total + 1 : 1;
+            }
           });
 
-          for (i=0; i<component.outPorts.length; i++) {
+          for (i = 0; i < component.outPorts.length; i++) {
             port = component.outPorts[i];
             if (!port.name) { continue; }
 
@@ -395,10 +395,10 @@ module.exports.register = function (context) {
               type: port.type,
               isConnected: connections.outports[port.name] > 0,
               x: node.metadata.width - 3,
-              y: (height / (len+1) * (i+1)) + top
+              y: (height / (len + 1) * (i + 1)) + top
             };
           }
-          for (i=0; i<component.inPorts.length; i++) {
+          for (i = 0; i < component.inPorts.length; i++) {
             port = component.inPorts[i];
             if (!port.name) { continue; }
 
@@ -407,7 +407,7 @@ module.exports.register = function (context) {
               type: port.type,
               isConnected: connections.inports[port.name] > 0,
               x: 3,
-              y: (height / (len+1) * (i+1)) + top
+              y: (height / (len + 1) * (i + 1)) + top
             };
           }
         }
@@ -423,7 +423,7 @@ module.exports.register = function (context) {
     },
     getNodeOutport: function (graph, processName, portName, route, componentName) {
       var ports = this.getPorts(graph, processName, componentName);
-      if ( !ports.outports[portName] ) {
+      if (!ports.outports[portName]) {
         ports.outports[portName] = {
           label: portName,
           x: TheGraph.config.nodeWidth,
@@ -440,7 +440,7 @@ module.exports.register = function (context) {
     },
     getNodeInport: function (graph, processName, portName, route, componentName) {
       var ports = this.getPorts(graph, processName, componentName);
-      if ( !ports.inports[portName] ) {
+      if (!ports.inports[portName]) {
         ports.inports[portName] = {
           label: portName,
           x: 0,
@@ -482,7 +482,7 @@ module.exports.register = function (context) {
     getGraphOutport: function (key) {
       var exp = this.graphOutports[key];
       if (!exp) {
-        exp = {inports:{},outports:{}};
+        exp = { inports: {}, outports: {} };
         exp.inports[key] = {
           label: key,
           type: "all",
@@ -498,7 +498,7 @@ module.exports.register = function (context) {
     getGraphInport: function (key) {
       var exp = this.graphInports[key];
       if (!exp) {
-        exp = {inports:{},outports:{}};
+        exp = { inports: {}, outports: {} };
         exp.outports[key] = {
           label: key,
           type: "all",
@@ -562,7 +562,7 @@ module.exports.register = function (context) {
       // If ports change or nodes move, then edges need to rerender, so we do the whole graph
       return this.dirty;
     },
-    render: function() {
+    render: function () {
       this.dirty = false;
       var rendered = this.rendered;
 
@@ -590,7 +590,7 @@ module.exports.register = function (context) {
       var nodes = graph.nodes.map(function (node) {
         var componentInfo = self.props.library[node.component];
         if (!componentInfo) {
-            throw new Error("Component " + node.component + " is not in library");
+          throw new Error("Component " + node.component + " is not in library");
         }
         var key = node.id;
         if (!node.metadata) {
@@ -667,15 +667,16 @@ module.exports.register = function (context) {
 
       var opacity = function (len) {
         var max = 1200,
-            min = 100,
-            oMin = 0.3;
+          min = 100,
+          oMin = 0.3;
         return len <= min ? 1 : len >= max ? oMin :
-          ((1 - ((len - min) / (max-min))) * (1 - oMin) + oMin);
+          ((1 - ((len - min) / (max - min))) * (1 - oMin) + oMin);
       }
 
 
       // Edges
       var edges = graph.edges.map(function (edge) {
+        console.log({ edge })
         var source = graph.getNode(edge.from.node);
         var target = graph.getNode(edge.to.node);
         if (!source || !target) {
@@ -693,17 +694,17 @@ module.exports.register = function (context) {
 
         var label = source.metadata.label + '() ' +
           edge.from.port.toUpperCase() +
-          (edge.from.hasOwnProperty('index') ? '['+edge.from.index+']' : '') + ' -> ' +
+          (edge.from.hasOwnProperty('index') ? '[' + edge.from.index + ']' : '') + ' -> ' +
           edge.to.port.toUpperCase() +
-          (edge.to.hasOwnProperty('index') ? '['+edge.to.index+']' : '') + ' ' +
+          (edge.to.hasOwnProperty('index') ? '[' + edge.to.index + ']' : '') + ' ' +
           target.metadata.label + '()';
         var key = edge.from.node + '() ' +
           edge.from.port.toUpperCase() +
-          (edge.from.hasOwnProperty('index') ? '['+edge.from.index+']' : '') + ' -> ' +
+          (edge.from.hasOwnProperty('index') ? '[' + edge.from.index + ']' : '') + ' -> ' +
           edge.to.port.toUpperCase() +
-          (edge.to.hasOwnProperty('index') ? '['+edge.to.index+']' : '') + ' ' +
+          (edge.to.hasOwnProperty('index') ? '[' + edge.to.index + ']' : '') + ' ' +
           edge.to.node + '()';
-        var connection = 'node_FROM---' + edge.from.node + '--port_FROM---' + edge.from.port + '--index_FROM---' + (edge.from.index === undefined ? false : edge.from.index) + '--node_TO---' + edge.to.node + '--port_TO---' + edge.to.port + '--index_TO---' + (edge.to.index === undefined ? false : edge.to.index)
+        var connection = `${edge.metadata.id}-rill-${edge.metadata.edgeType}`
 
         var edgeOptions = {
           key: key,
@@ -765,7 +766,7 @@ module.exports.register = function (context) {
         var nodeKey = inport.process;
         var portKey = inport.port;
         if (!inport.metadata) {
-          inport.metadata = {x:0, y:0};
+          inport.metadata = { x: 0, y: 0 };
         }
         var metadata = inport.metadata;
         if (!metadata.x) { metadata.x = 0; }
@@ -775,23 +776,23 @@ module.exports.register = function (context) {
         // Private port info
         var portInfo = self.portInfo[nodeKey];
         if (!portInfo) {
-          console.warn("Node "+nodeKey+" not found for graph inport "+label);
+          console.warn("Node " + nodeKey + " not found for graph inport " + label);
           return;
         }
         var privatePort = portInfo.inports[portKey];
         if (!privatePort) {
-          console.warn("Port "+nodeKey+"."+portKey+" not found for graph inport "+label);
+          console.warn("Port " + nodeKey + "." + portKey + " not found for graph inport " + label);
           return;
         }
         // Private node
         var privateNode = graph.getNode(nodeKey);
         if (!privateNode) {
-          console.warn("Node "+nodeKey+" not found for graph inport "+label);
+          console.warn("Node " + nodeKey + " not found for graph inport " + label);
           return;
         }
         // Node view
         var expNode = {
-          key: "inport.node."+key,
+          key: "inport.node." + key,
           export: inport,
           exportKey: key,
           x: metadata.x,
@@ -811,7 +812,7 @@ module.exports.register = function (context) {
         expNode = TheGraph.merge(TheGraph.config.graph.inportNode, expNode);
         // Edge view
         var expEdge = {
-          key: "inport.edge."+key,
+          key: "inport.edge." + key,
           export: inport,
           exportKey: key,
           graph: graph,
@@ -845,7 +846,7 @@ module.exports.register = function (context) {
         var nodeKey = outport.process;
         var portKey = outport.port;
         if (!outport.metadata) {
-          outport.metadata = {x:0, y:0};
+          outport.metadata = { x: 0, y: 0 };
         }
         var metadata = outport.metadata;
         if (!metadata.x) { metadata.x = 0; }
@@ -855,23 +856,23 @@ module.exports.register = function (context) {
         // Private port info
         var portInfo = self.portInfo[nodeKey];
         if (!portInfo) {
-          console.warn("Node "+nodeKey+" not found for graph outport "+label);
+          console.warn("Node " + nodeKey + " not found for graph outport " + label);
           return;
         }
         var privatePort = portInfo.outports[portKey];
         if (!privatePort) {
-          console.warn("Port "+nodeKey+"."+portKey+" not found for graph outport "+label);
+          console.warn("Port " + nodeKey + "." + portKey + " not found for graph outport " + label);
           return;
         }
         // Private node
         var privateNode = graph.getNode(nodeKey);
         if (!privateNode) {
-          console.warn("Node "+nodeKey+" not found for graph outport "+label);
+          console.warn("Node " + nodeKey + " not found for graph outport " + label);
           return;
         }
         // Node view
         var expNode = {
-          key: "outport.node."+key,
+          key: "outport.node." + key,
           export: outport,
           exportKey: key,
           x: metadata.x,
@@ -891,7 +892,7 @@ module.exports.register = function (context) {
         expNode = TheGraph.merge(TheGraph.config.graph.outportNode, expNode);
         // Edge view
         var expEdge = {
-          key: "outport.edge."+key,
+          key: "outport.edge." + key,
           export: outport,
           exportKey: key,
           graph: graph,
@@ -927,7 +928,7 @@ module.exports.register = function (context) {
           return;
         }
         var groupOptions = {
-          key: "group."+group.name,
+          key: "group." + group.name,
           graph: graph,
           item: group,
           app: self.props.app,
@@ -949,13 +950,13 @@ module.exports.register = function (context) {
 
       // Selection pseudo-group
       if (this.state.displaySelectionGroup &&
-          selectedIds.length >= 2) {
+        selectedIds.length >= 2) {
         var limits = TheGraph.findMinMax(graph, selectedIds);
         if (limits) {
           var pseudoGroup = {
             name: "selection",
             nodes: selectedIds,
-            metadata: {color:1}
+            metadata: { color: 1 }
           };
           var selectionGroupOptions = {
             graph: graph,
@@ -1035,7 +1036,7 @@ module.exports.register = function (context) {
       ];
 
       var selectedClass = (this.state.forceSelection ||
-                           selectedIds.length>0) ? ' selection' : '';
+        selectedIds.length > 0) ? ' selection' : '';
 
       var containerOptions = TheGraph.merge(TheGraph.config.graph.container, { className: 'graph' + selectedClass });
       return TheGraph.factories.graph.createGraphContainerGroup.call(this, containerOptions, containerContents);
